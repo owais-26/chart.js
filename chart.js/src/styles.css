@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+.chart-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+body{
+ background: rgb(11,24,83);
+background: linear-gradient(298deg, rgba(11,24,83,1) 0%, rgba(30,12,96,1) 100%);
+}
+#pieChart .axis-x-label {
+  fill: rgb(255, 255, 255) !important; /* Change the color of x-axis labels to red */
+}
+
+#pieChart .axis-y-label {
+   fill: rgb(255, 255, 255) !important;}
+
+
+
+
+
