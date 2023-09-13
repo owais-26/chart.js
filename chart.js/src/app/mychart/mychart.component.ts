@@ -1,8 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Chart, registerables,ChartOptions } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexTitleSubtitle,
+
+  ApexDataLabels,
+  ApexTooltip,
+  ApexStroke
+} from "ng-apexcharts";
+
+export type ChartOpt = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  title: ApexTitleSubtitle;
+  
+  
+};
+export type ChartArea = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  stroke: ApexStroke;
+  tooltip: ApexTooltip;
+  dataLabels: ApexDataLabels;
+};
 Chart.register(...registerables);
 Chart.register(ChartDataLabels);
+
 
 @Component({
   selector: 'app-mychart',
@@ -10,7 +39,74 @@ Chart.register(ChartDataLabels);
   styleUrls: ['./mychart.component.css'],
 })
 export class MychartComponent implements OnInit {
-  constructor() {}
+  @ViewChild("chart") chart: any;
+  public chartOpt: ChartOpt;
+ 
+  public ChartArea: ChartArea;
+
+  constructor() {
+    this.chartOpt = {
+      series: [
+        {
+          name: "My-series",
+          data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "line"
+      },
+      title: {
+        text: "My First Angular Chart",
+        
+      
+      },
+      xaxis: {
+        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"]
+      },
+     
+    };
+    this.ChartArea = {
+      series: [
+        {
+          name: "series1",
+          data: [31, 40, 28, 51, 42, 109, 100]
+        },
+        {
+          name: "series2",
+          data: [11, 32, 45, 32, 34, 52, 41]
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "area"
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: "smooth"
+      },
+      xaxis: {
+        type: "datetime",
+        categories: [
+          "2018-09-19T00:00:00.000Z",
+          "2018-09-19T01:30:00.000Z",
+          "2018-09-19T02:30:00.000Z",
+          "2018-09-19T03:30:00.000Z",
+          "2018-09-19T04:30:00.000Z",
+          "2018-09-19T05:30:00.000Z",
+          "2018-09-19T06:30:00.000Z"
+        ]
+      },
+      tooltip: {
+        x: {
+          format: "dd/MM/yy HH:mm"
+        }
+      }
+    };
+  }
+  
 
   ngOnInit(): void {
     this.createPieChart();
@@ -19,6 +115,24 @@ export class MychartComponent implements OnInit {
     this.createRadarChart();
     this.createDoughnutChart();
     this.createHorizontalBarChart();
+
+    
+  }
+  
+  public generateData(baseval : any, count : any, yrange : any) {
+    var i = 0;
+    var series = [];
+    while (i < count) {
+      var x = Math.floor(Math.random() * (750 - 1 + 1)) + 1;
+      var y =
+        Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+      var z = Math.floor(Math.random() * (75 - 15 + 1)) + 15;
+
+      series.push([x, y, z]);
+      baseval += 86400000;
+      i++;
+    }
+    return series;
   }
 
   private createPieChart() {
@@ -124,8 +238,13 @@ export class MychartComponent implements OnInit {
            
            }
           },
-        }
+          datalabels: {
+            color : 'white'
+          }
+        },
+        
       },
+      plugins: [ChartDataLabels],
     });
   }
 
@@ -146,21 +265,7 @@ export class MychartComponent implements OnInit {
         ],
       },
       options: {
-        scales: {
-          x: {
-            beginAtZero: true,
-            ticks: {
-              color: 'white',
-            }, // Start the x-axis at zero
-          },
-          y: {
-            beginAtZero: true,
-            ticks: {
-              color: 'white'
-              ,
-            }, // Start the y-axis at zero
-          },
-        },
+       
         maintainAspectRatio: false, 
         plugins: {
           legend: {
@@ -170,6 +275,9 @@ export class MychartComponent implements OnInit {
 
             }
           },
+          datalabels: {
+            color: 'white'
+          }
         }// Allow chart to resize based on canvas dimensions
       },
     });
@@ -201,20 +309,7 @@ export class MychartComponent implements OnInit {
       },
       options: {
         
-        scales: {
-          x: {
-            beginAtZero: true,
-            ticks: {
-              color: 'white',
-            }, // Start the x-axis at zero
-          },
-          y: {
-            beginAtZero: true,
-            ticks: {
-              color: 'white',
-            }, // Start the y-axis at zero
-          },
-        },
+     
         maintainAspectRatio: false,
          // Allow chart to resize based on canvas dimensions
         plugins: {
@@ -227,8 +322,12 @@ export class MychartComponent implements OnInit {
             } // You can display the legend if needed
           },
 
+
           tooltip: {
             enabled: true
+          },
+          datalabels: {
+            color: 'white'
           }
 
         },
@@ -261,6 +360,9 @@ export class MychartComponent implements OnInit {
               color : 'white',
             }
           },
+          datalabels: {
+            color: 'white'
+          }
         },
       } as ChartOptions, // Make sure to cast the options as ChartOptions
     });
@@ -313,10 +415,61 @@ export class MychartComponent implements OnInit {
         
             tooltip: {
               enabled: true
-            }
+            },
+          datalabels: {
+            color: 'white'
+          }
       
         },
       } as ChartOptions,
     });
   }
 }
+
+// import { Component, ViewChild } from "@angular/core";
+
+// import {
+//   ChartComponent,
+//   ApexAxisChartSeries,
+//   ApexChart,
+//   ApexXAxis,
+//   ApexTitleSubtitle
+// } from "ng-apexcharts";
+
+// export type ChartOptions = {
+//   series: ApexAxisChartSeries;
+//   chart: ApexChart;
+//   xaxis: ApexXAxis;
+//   title: ApexTitleSubtitle;
+// };
+
+// @Component({
+//   selector: "app-root",
+//   templateUrl: "./mychart.component.html",
+//   styleUrls: ["./mychart.component.css"]
+// })
+// export class MychartComponent {
+//   @ViewChild("chart") chart: any;
+//   public chartOptions: any;
+
+//   constructor() {
+//     this.chartOptions = {
+//       series: [
+//         {
+//           name: "My-series",
+//           data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+//         }
+//       ],
+//       chart: {
+//         height: 350,
+//         type: "bar"
+//       },
+//       title: {
+//         text: "My First Angular Chart"
+//       },
+//       xaxis: {
+//         categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"]
+//       }
+//     };
+//   }
+// }
