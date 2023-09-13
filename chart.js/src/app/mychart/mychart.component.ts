@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart, registerables,ChartOptions } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(...registerables);
+Chart.register(ChartDataLabels);
 
 @Component({
   selector: 'app-mychart',
@@ -23,21 +25,19 @@ export class MychartComponent implements OnInit {
     const pieChartCanvas = document.getElementById(
       'pieChart'
     ) as HTMLCanvasElement;
+
     new Chart(pieChartCanvas, {
       type: 'pie',
       data: {
-        labels: ['Sales', 'Expenses', 'Profit'],
-        
+        labels: ['Sales', 'Expenses', 'Profit', 'Loss', 'Discount'],
         datasets: [
           {
-            data: [3000, 1500, 1500],
-            backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'],
-            
+            data: [3000, 1500, 1500, 1200,500],
+            backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#34322', 'red'],
           },
         ],
       },
       options: {
-        
         scales: {
           x: {
             beginAtZero: true,
@@ -52,15 +52,35 @@ export class MychartComponent implements OnInit {
             }, // Start the y-axis at zero
           },
         },
-        maintainAspectRatio: false, // Allow chart to resize based on canvas dimensions
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: 'white',
+            },
+          },
+          datalabels: {
+            formatter: function (value : any , context : any) {
+              const dataPoints = context.chart.data.datasets[0].data;
+              function totalSum(total : any, datapoint : any) { 
+                return total + datapoint;
+              }
+
+              
+              const totalValue = dataPoints.reduce(totalSum, 0);
+              const percent = ((value / totalValue) * 100).toFixed(1);
+              return percent + '%';
+            },
+            color: 'white',
+          },
+        }, // Allow chart to resize based on canvas dimensions
       },
+      plugins: [ChartDataLabels],
     });
   }
 
   private createLineChart() {
-    const lineChartCanvas = document.getElementById(
-      'lineChart'
-    ) as HTMLCanvasElement;
+    const lineChartCanvas = document.getElementById('lineChart') as HTMLCanvasElement;
     new Chart(lineChartCanvas, {
       type: 'line',
       data: {
@@ -85,21 +105,30 @@ export class MychartComponent implements OnInit {
           x: {
             beginAtZero: true,
             ticks: {
-              color: 'white',
+              color: 'white', // Set the color of x-axis labels here
             },
-            // Start the x-axis at zero
           },
           y: {
             beginAtZero: true,
             ticks: {
-              color: 'white',
-            }, // Start the y-axis at zero
+              color: 'white', // Set the color of y-axis labels here
+            },
           },
         },
-        maintainAspectRatio: false, // Allow chart to resize based on canvas dimensions
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+           labels :{
+            color: 'white', // Set the color of
+           
+           
+           }
+          },
+        }
       },
     });
   }
+
 
   private createPolarAreaChart() {
     const polarAreaChartCanvas = document.getElementById(
@@ -132,7 +161,16 @@ export class MychartComponent implements OnInit {
             }, // Start the y-axis at zero
           },
         },
-        maintainAspectRatio: false, // Allow chart to resize based on canvas dimensions
+        maintainAspectRatio: false, 
+        plugins: {
+          legend: {
+            labels: {
+              color: 'white', // Set the color of
+
+
+            }
+          },
+        }// Allow chart to resize based on canvas dimensions
       },
     });
   }
@@ -144,7 +182,8 @@ export class MychartComponent implements OnInit {
     new Chart(radarChartCanvas, {
       type: 'radar',
       data: {
-        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        labels:  ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        
         datasets: [
           {
             label: 'Sales',
@@ -161,6 +200,7 @@ export class MychartComponent implements OnInit {
         ],
       },
       options: {
+        
         scales: {
           x: {
             beginAtZero: true,
@@ -175,7 +215,23 @@ export class MychartComponent implements OnInit {
             }, // Start the y-axis at zero
           },
         },
-        maintainAspectRatio: false, // Allow chart to resize based on canvas dimensions
+        maintainAspectRatio: false,
+         // Allow chart to resize based on canvas dimensions
+        plugins: {
+          
+          
+          legend: {
+            display: true,
+            labels:{
+              color : 'white',
+            } // You can display the legend if needed
+          },
+
+          tooltip: {
+            enabled: true
+          }
+
+        },
       },
     });
   }
@@ -201,6 +257,9 @@ export class MychartComponent implements OnInit {
           legend: {
             display: true,
             position: 'top',
+            labels :{
+              color : 'white',
+            }
           },
         },
       } as ChartOptions, // Make sure to cast the options as ChartOptions
@@ -246,8 +305,16 @@ export class MychartComponent implements OnInit {
         },
         plugins: {
           legend: {
-            display: false, // You can display the legend if needed
+            display: true,
+            labels: {
+              color : 'white',
+            } // You can display the legend if needed
           },
+        
+            tooltip: {
+              enabled: true
+            }
+      
         },
       } as ChartOptions,
     });
