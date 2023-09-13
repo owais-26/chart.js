@@ -1,6 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart, registerables,ChartOptions } from 'chart.js';
+import { Chart, registerables, ChartOptions } from 'chart.js';
+// import {
+//   ApexAxisChartSeries,
+//   ApexChart,
+//   ApexTitleSubtitle,
+//   ApexDataLabels,
+//   ApexFill,
+//   ApexMarkers,
+//   ApexYAxis,
+//   ApexXAxis,
+//   ApexTooltip,
+// } from 'ng-apexcharts';
+// import { dataSeries } from './data-series';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 Chart.register(...registerables);
 Chart.register(ChartDataLabels);
 
@@ -10,6 +23,17 @@ Chart.register(ChartDataLabels);
   styleUrls: ['./mychart.component.css'],
 })
 export class MychartComponent implements OnInit {
+  // public series: ApexAxisChartSeries[] = []; // Initialize as an empty array
+  // public chart: ApexChart = {
+  //   type: 'line', // Add the 'type' property here
+  // };
+  // public dataLabels: ApexDataLabels = {}; // Initialize as an empty object
+  // public markers: ApexMarkers = {}; // Initialize as an empty object
+  // public title: ApexTitleSubtitle = {}; // Initialize as an empty object
+  // public fill: ApexFill = {}; // Initialize as an empty object
+  // public yaxis: ApexYAxis[] = []; // Initialize as an empty array
+  // public xaxis: ApexXAxis = {}; // Initialize as an empty object
+  // public tooltip: ApexTooltip = {}; // Initialize as an empty object
   constructor() {}
 
   ngOnInit(): void {
@@ -19,8 +43,77 @@ export class MychartComponent implements OnInit {
     this.createRadarChart();
     this.createDoughnutChart();
     this.createHorizontalBarChart();
+    // this.initChartData();
   }
+  // public initChartData(): void {
+  //   let ts2 = 1484418600000;
+  //   let dates = [];
+  //   for (let i = 0; i < 120; i++) {
+  //     ts2 = ts2 + 86400000;
+  //     dates.push([ts2, dataSeries[1][i].value]);
+  //   }
 
+  //   this.series = [
+  //     {
+  //       name: 'XYZ MOTORS',
+  //       data: dates,
+  //     },
+  //   ];
+  //   this.chart = {
+  //     type: 'area',
+  //     stacked: false,
+  //     height: 350,
+  //     zoom: {
+  //       type: 'x',
+  //       enabled: true,
+  //       autoScaleYaxis: true,
+  //     },
+  //     toolbar: {
+  //       autoSelected: 'zoom',
+  //     },
+  //   };
+  //   this.dataLabels = {
+  //     enabled: false,
+  //   };
+  //   this.markers = {
+  //     size: 0,
+  //   };
+  //   this.title = {
+  //     text: 'Stock Price Movement',
+  //     align: 'left',
+  //   };
+  //   this.fill = {
+  //     type: 'gradient',
+  //     gradient: {
+  //       shadeIntensity: 1,
+  //       inverseColors: false,
+  //       opacityFrom: 0.5,
+  //       opacityTo: 0,
+  //       stops: [0, 90, 100],
+  //     },
+  //   };
+  //   this.yaxis = {
+  //     labels: {
+  //       formatter: function (val) {
+  //         return (val / 1000000).toFixed(0);
+  //       },
+  //     },
+  //     title: {
+  //       text: 'Price',
+  //     },
+  //   };
+  //   this.xaxis = {
+  //     type: 'datetime',
+  //   };
+  //   this.tooltip = {
+  //     shared: false,
+  //     y: {
+  //       formatter: function (val) {
+  //         return (val / 1000000).toFixed(0);
+  //       },
+  //     },
+  //   };
+  // }
   private createPieChart() {
     const pieChartCanvas = document.getElementById(
       'pieChart'
@@ -32,7 +125,7 @@ export class MychartComponent implements OnInit {
         labels: ['Sales', 'Expenses', 'Profit', 'Loss', 'Discount'],
         datasets: [
           {
-            data: [3000, 1500, 1500, 1200,500],
+            data: [3000, 1500, 1500, 1200, 500],
             backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56', '#34322', 'red'],
           },
         ],
@@ -60,13 +153,12 @@ export class MychartComponent implements OnInit {
             },
           },
           datalabels: {
-            formatter: function (value : any , context : any) {
+            formatter: function (value: any, context: any) {
               const dataPoints = context.chart.data.datasets[0].data;
-              function totalSum(total : any, datapoint : any) { 
+              function totalSum(total: any, datapoint: any) {
                 return total + datapoint;
               }
 
-              
               const totalValue = dataPoints.reduce(totalSum, 0);
               const percent = ((value / totalValue) * 100).toFixed(1);
               return percent + '%';
@@ -80,7 +172,9 @@ export class MychartComponent implements OnInit {
   }
 
   private createLineChart() {
-    const lineChartCanvas = document.getElementById('lineChart') as HTMLCanvasElement;
+    const lineChartCanvas = document.getElementById(
+      'lineChart'
+    ) as HTMLCanvasElement;
     new Chart(lineChartCanvas, {
       type: 'line',
       data: {
@@ -118,17 +212,14 @@ export class MychartComponent implements OnInit {
         maintainAspectRatio: false,
         plugins: {
           legend: {
-           labels :{
-            color: 'white', // Set the color of
-           
-           
-           }
+            labels: {
+              color: 'white', // Set the color of
+            },
           },
-        }
+        },
       },
     });
   }
-
 
   private createPolarAreaChart() {
     const polarAreaChartCanvas = document.getElementById(
@@ -156,21 +247,18 @@ export class MychartComponent implements OnInit {
           y: {
             beginAtZero: true,
             ticks: {
-              color: 'white'
-              ,
+              color: 'white',
             }, // Start the y-axis at zero
           },
         },
-        maintainAspectRatio: false, 
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             labels: {
               color: 'white', // Set the color of
-
-
-            }
+            },
           },
-        }// Allow chart to resize based on canvas dimensions
+        }, // Allow chart to resize based on canvas dimensions
       },
     });
   }
@@ -182,8 +270,8 @@ export class MychartComponent implements OnInit {
     new Chart(radarChartCanvas, {
       type: 'radar',
       data: {
-        labels:  ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        
+        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+
         datasets: [
           {
             label: 'Sales',
@@ -200,7 +288,6 @@ export class MychartComponent implements OnInit {
         ],
       },
       options: {
-        
         scales: {
           x: {
             beginAtZero: true,
@@ -216,21 +303,18 @@ export class MychartComponent implements OnInit {
           },
         },
         maintainAspectRatio: false,
-         // Allow chart to resize based on canvas dimensions
+        // Allow chart to resize based on canvas dimensions
         plugins: {
-          
-          
           legend: {
             display: true,
-            labels:{
-              color : 'white',
-            } // You can display the legend if needed
+            labels: {
+              color: 'white',
+            }, // You can display the legend if needed
           },
 
           tooltip: {
-            enabled: true
-          }
-
+            enabled: true,
+          },
         },
       },
     });
@@ -257,9 +341,9 @@ export class MychartComponent implements OnInit {
           legend: {
             display: true,
             position: 'top',
-            labels :{
-              color : 'white',
-            }
+            labels: {
+              color: 'white',
+            },
           },
         },
       } as ChartOptions, // Make sure to cast the options as ChartOptions
@@ -307,14 +391,13 @@ export class MychartComponent implements OnInit {
           legend: {
             display: true,
             labels: {
-              color : 'white',
-            } // You can display the legend if needed
+              color: 'white',
+            }, // You can display the legend if needed
           },
-        
-            tooltip: {
-              enabled: true
-            }
-      
+
+          tooltip: {
+            enabled: true,
+          },
         },
       } as ChartOptions,
     });
