@@ -5,8 +5,7 @@
   margin-bottom: 10px;
 }
 body{
- background: rgb(11,24,83);
-background: linear-gradient(298deg, rgba(11,24,83,1) 0%, rgba(30,12,96,1) 100%);
+background: #1B213B;
 }
 #pieChart .axis-x-label {
   fill: rgb(255, 255, 255) !important; /* Change the color of x-axis labels to red */

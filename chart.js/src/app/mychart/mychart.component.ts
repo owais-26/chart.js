@@ -10,7 +10,10 @@ import {
 
   ApexDataLabels,
   ApexTooltip,
-  ApexStroke
+  ApexNonAxisChartSeries,
+  ApexResponsive,
+  ApexStroke,
+  ApexLegend
 } from "ng-apexcharts";
 
 export type ChartOpt = {
@@ -18,8 +21,17 @@ export type ChartOpt = {
   chart: ApexChart;
   xaxis: ApexXAxis;
   title: ApexTitleSubtitle;
+  dataLabels : ApexDataLabels
+  legend : ApexLegend;
+
   
   
+};
+export type ChartPie = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
 };
 export type ChartArea = {
   series: ApexAxisChartSeries;
@@ -28,6 +40,9 @@ export type ChartArea = {
   stroke: ApexStroke;
   tooltip: ApexTooltip;
   dataLabels: ApexDataLabels;
+  legend: ApexLegend;
+
+  
 };
 Chart.register(...registerables);
 Chart.register(ChartDataLabels);
@@ -43,8 +58,32 @@ export class MychartComponent implements OnInit {
   public chartOpt: ChartOpt;
  
   public ChartArea: ChartArea;
+  public ChartPie: ChartPie;
 
   constructor() {
+    this.ChartPie = {
+      series: [44, 55, 13, 43, 22],
+      chart: {
+        width: 380,
+        type: "pie"
+      },
+      labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
+      responsive: [
+        {
+          breakpoint: 680,
+          options: {
+            chart: {
+              width: 400
+            },
+            legend: {
+              position: "top"
+            }
+          ,
+            
+          }
+        }
+      ]
+    };
     this.chartOpt = {
       series: [
         {
@@ -58,11 +97,28 @@ export class MychartComponent implements OnInit {
       },
       title: {
         text: "My First Angular Chart",
+        style:{
+          color: 'white'
+        }
         
       
       },
       xaxis: {
-        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"]
+        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"],
+        
+      },
+      
+    
+
+      dataLabels: {
+        enabled: true,
+        style: {
+          colors: ['white']
+        }
+      },
+      legend: {
+       
+        position: 'top'
       },
      
     };
@@ -70,7 +126,9 @@ export class MychartComponent implements OnInit {
       series: [
         {
           name: "series1",
-          data: [31, 40, 28, 51, 42, 109, 100]
+          data: [31, 40, 28, 51, 42, 109, 100],
+        
+          
         },
         {
           name: "series2",
@@ -97,13 +155,24 @@ export class MychartComponent implements OnInit {
           "2018-09-19T04:30:00.000Z",
           "2018-09-19T05:30:00.000Z",
           "2018-09-19T06:30:00.000Z"
-        ]
+        ],
+        
+        
       },
       tooltip: {
         x: {
           format: "dd/MM/yy HH:mm"
-        }
-      }
+        
+          
+        },
+        
+       
+      },
+      legend: {
+        show: true,
+        position: 'top'
+        
+      },
     };
   }
   
