@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CubejsService } from './cubejs.service';
+import { BurgerService } from './burger.service';
 
-describe('CubejsService', () => {
-  let service: CubejsService;
+describe('BurgerService', () => {
+  let service: BurgerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CubejsService);
+    service = TestBed.inject(BurgerService);
   });
 
   it('should be created', () => {
